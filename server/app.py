@@ -1,7 +1,7 @@
-from flask import Flask, make_response
+from flask import Flask, abort, make_response, jsonify
 from flask_migrate import Migrate
 
-from server.models import db
+from server.models import db, Exercise, Workout, WorkoutExercise
 
 import os
 
@@ -20,6 +20,28 @@ db.init_app(app)
 @app.get("/")
 def home():
     return make_response({"status": "ok"}, 200)
+
+
+@app.get("/exercises")
+def get_exercises():
+    exercises = Exercise.query.all()
+    return jsonify([e.to_dict() for e in exercises]), 200
+
+
+@app.get("/workouts")
+def get_workouts():
+    workouts = Workout.query.all()
+    return jsonify([w.to_dict() for w in workouts]), 200
+
+
+
+@app.get("/workouts/<int:id>")
+def get_workout(id):
+    workout = Workout.query.get(id)
+    if not workout:
+        abort(404, description="Workout not found")
+    return jsonify(workout.to_dict()), 200
+        
 
 
 

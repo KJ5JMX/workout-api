@@ -1,4 +1,4 @@
-from flask import Flask, make_response, jsonify
+from flask import Flask, make_response
 from flask_migrate import Migrate
 
 from server.models import db
@@ -10,7 +10,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{os.path.join(BASE_DIR, 'workout.db')}"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///workout.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 migrate = Migrate(app, db)
